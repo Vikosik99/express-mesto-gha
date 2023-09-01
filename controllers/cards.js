@@ -58,7 +58,7 @@ module.exports.likeCard = (req, res) => {
   }
 };
 
-module.exports.dislikeCard = (req, res) => {
+module.exports.deletelikeCard = (req, res) => {
   if (req.params.cardId.lenght === 24) {
     Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
       .populate(['owner', 'likes'])
