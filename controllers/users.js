@@ -20,6 +20,7 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUserById = (req, res) => {
+  console.log(req.params.userId);
   if (req.params.userId.lenght === 24) {
     User.findById(req.params.userId)
       .then((user) => {
@@ -42,7 +43,7 @@ module.exports.editUserData = (req, res) => {
         if (err.name === 'ValidationError') {
           res.status(400).send({ message: err.message });
         } else {
-          res.status(404).send({ message: `Пользователь по данному _id: ${req.params.userId} не найден.` });
+          res.status(404).send({ message: `Пользователь по данному _id: ${req.params.user._id} не найден.` });
         }
       });
   } else {
