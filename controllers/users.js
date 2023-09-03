@@ -52,9 +52,10 @@ module.exports.editUserData = (req, res) => {
 };
 
 module.exports.editUserAvatar = (req, res) => {
+  const { avatar } = req.body;
   if (req.user._id) {
-    User.findByIdAndUpdate(req.user._id, { avatar: req.body.avatar }, { new: 'true', runValidators: true })
-      .then((user) => res.status(user))
+    User.findByIdAndUpdate(req.user._id, { avatar }, { new: 'true', runValidators: true })
+      .then((user) => res.send(user))
       .catch((err) => {
         if (err.name === 'ValidationError') {
           res.status(400).send({ message: err.message });
