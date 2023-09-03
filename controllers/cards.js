@@ -26,51 +26,54 @@ module.exports.getCards = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  if (req.params.cardId.length === 24) {
-    Card.findByIdAndRemove(req.params.cardId)
+  const cardid = req.params.cardId;
+  if (cardid.length === 24) {
+    Card.findByIdAndRemove(cardid)
       .then((card) => {
         if (!card) {
-          res.status(404).send({ message: `Карточка c _id: ${req.params.cardId} не найдена.` });
+          res.status(404).send({ message: `Карточка c _id: ${cardid} не найдена.` });
           return;
         }
-        res.send({ message: `Карточка ${req.params.cardId} удалена` });
+        res.send({ message: `Карточка ${cardid} удалена` });
       })
-      .catch(() => res.status(404).send({ message: `Карточка c _id: ${req.params.cardId} не найдена.` }));
+      .catch(() => res.status(404).send({ message: `Карточка c _id: ${cardid} не найдена.` }));
   } else {
-    res.status(400).send({ message: `Некорректный _id карточки: ${req.params.cardId}` });
+    res.status(400).send({ message: `Некорректный _id карточки: ${cardid}` });
   }
 };
 
 module.exports.likeCard = (req, res) => {
-  if (req.params.cardId.length === 24) {
-    Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
+  const cardid = req.params.cardId;
+  if (cardid.length === 24) {
+    Card.findByIdAndUpdate(cardid, { $addToSet: { likes: req.user._id } }, { new: true })
       .populate(['owner', 'likes'])
       .then((card) => {
         if (!card) {
-          res.status(404).send({ message: `Карточка c _id: ${req.params.cardId} не найдена.` });
+          res.status(404).send({ message: `Карточка c _id: ${cardid} не найдена.` });
           return;
         }
         res.send(card);
       })
-      .catch(() => res.status(404).send({ message: `Карточка c _id: ${req.params.cardId} не найдена.` }));
+      .catch(() => res.status(404).send({ message: `Карточка c _id: ${cardid} не найдена.` }));
   } else {
-    res.status(400).send({ message: `Некорректный _id карточки: ${req.params.cardId}` });
+    res.status(400).send({ message: `Некорректный _id карточки: ${cardid}` });
   }
 };
 
 module.exports.deletelikeCard = (req, res) => {
+  const cardid = req.params.cardId;
   if (req.params.cardId.length === 24) {
     Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
       .populate(['owner', 'likes'])
       .then((card) => {
         if (!card) {
-          res.status(404).send({ message: `Карточка c _id: ${req.params.cardId} не найдена.` });
+          res.status(404).send({ message: `Карточка c _id: ${cardid} не найдена.` });
           return;
         }
         res.send(card);
       })
-      .catch(() => res.status(404).send({ message: `Карточка c _id: ${req.params.cardId} не найдена.` }));
+      .catch(() => res.status(404).send({ message: `Карточка c _id: ${cardid} не найдена.` }));
   } else {
-    res.status(400).send({ message: `Некорректный _id карточки: ${req.params.cardId}` });
+    res.status(400).send({ message: `Некорректный _id карточки: ${cardid}` });
   }
 };
