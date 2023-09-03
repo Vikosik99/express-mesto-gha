@@ -21,18 +21,18 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUserById = (req, res) => {
   const usersid = req.params.userId;
-  if (usersid.length === 24) {
-    User.findById(req.params.userId)
-      .then((user) => {
-        if (!user) {
-          res.status(404).send({ message: `Пользователь по данному _id: ${usersid} не найден.` });
-        }
-        res.send(user);
-      })
-      .catch(() => res.status(404).send({ message: `Пользователь по данному _id: ${usersid} не найден.` }));
-  } else {
-    res.status(400).send({ message: 'Количество символов в id не соответствует необходимому' });
-  }
+  User.findById(usersid)
+    .orFail()
+    .then((user) => {
+      res.status(201).send(user);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Количество символов в id не соответствует необходимому' });
+      } else {
+        res.status(404).send({ message: 'Пользователь не найден.' });
+      }
+    });
 };
 
 module.exports.editUserData = (req, res) => {
