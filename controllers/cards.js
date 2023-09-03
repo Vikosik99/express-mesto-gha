@@ -26,7 +26,7 @@ module.exports.getCards = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  if (req.params.cardId.lenght === 24) {
+  if (req.params.cardId.length === 24) {
     Card.findByIdAndRemove(req.params.cardId)
       .then((card) => {
         if (!card) {
@@ -42,7 +42,7 @@ module.exports.deleteCard = (req, res) => {
 };
 
 module.exports.likeCard = (req, res) => {
-  if (req.params.cardId.lenght === 24) {
+  if (req.params.cardId.length === 24) {
     Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
       .populate(['owner', 'likes'])
       .then((card) => {
@@ -59,7 +59,7 @@ module.exports.likeCard = (req, res) => {
 };
 
 module.exports.deletelikeCard = (req, res) => {
-  if (req.params.cardId.lenght === 24) {
+  if (req.params.cardId.length === 24) {
     Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
       .populate(['owner', 'likes'])
       .then((card) => {
