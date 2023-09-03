@@ -26,6 +26,7 @@ module.exports.getUserById = (req, res) => {
         if (!user) {
           res.status(404).send({ message: `Пользователь по данному _id: ${req.params.userId} не найден.` });
         }
+        res.send(user);
       })
       .catch(() => res.status(404).send({ message: `Пользователь по данному _id: ${req.params.userId} не найден.` }));
   } else {
