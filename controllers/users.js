@@ -23,7 +23,7 @@ module.exports.getUserById = (req, res) => {
   const usersid = req.params.userId;
   User.findById(usersid)
     .orFail()
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: 'Количество символов в id не соответствует необходимому' });
