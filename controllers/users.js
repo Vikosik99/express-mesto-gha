@@ -23,12 +23,14 @@ module.exports.getUserById = (req, res) => {
   const usersid = req.params.userId;
   User.findById(usersid)
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((user) => {
+      res.status(200).send(user);
+    })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Количество символов в id не соответствует необходимому' });
       } else {
-        res.status(404).send({ message: 'Пользователь не найден.' });
+        res.status(500).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -38,6 +40,7 @@ module.exports.editUserData = (req, res) => {
   const userid = req.user._id;
   if (userid) {
     User.findByIdAndUpdate(userid, { name, about }, { new: 'true', runValidators: true })
+      .orFail()
       .then((user) => res.send(user))
       .catch((err) => {
         if (err.name === 'ValidationError') {
@@ -56,6 +59,7 @@ module.exports.editUserAvatar = (req, res) => {
   const userid = req.user._id;
   if (userid) {
     User.findByIdAndUpdate(userid, { avatar }, { new: 'true', runValidators: true })
+      .orFail()
       .then((user) => res.send(user))
       .catch((err) => {
         if (err.name === 'ValidationError') {
