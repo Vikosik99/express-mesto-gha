@@ -22,11 +22,11 @@ module.exports.getUsers = (req, res) => {
 module.exports.getUserById = (req, res) => {
   const usersid = req.params.userId;
   User.findById(usersid)
-    .orFail()
+    .orFail(new Error('NotValidId'))
     .then((user) => { res.status(200).send(user); })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Количество символов в id не соответствует необходимому' });
+      if (err.message === 'NotValidId') {
+        res.status(404).send({ message: 'Пользователь по данному id не найден' });
       } else {
         res.status(500).send({ message: 'На сервере произошла ошибка' });
       }
