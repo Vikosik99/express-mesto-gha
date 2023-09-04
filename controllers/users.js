@@ -57,18 +57,16 @@ module.exports.editUserData = (req, res) => {
 module.exports.editUserAvatar = (req, res) => {
   const { avatar } = req.body;
   const userid = req.user._id;
-  if (userid) {
-    User.findByIdAndUpdate(userid, { avatar }, { new: 'true', runValidators: true })
-      .orFail()
-      .then((user) => res.send(user))
-      .catch((err) => {
-        if (err.name === 'ValidationError') {
-          res.status(400).send({ message: err.message });
-        } else {
-          res.status(404).send({ message: `Пользователь по данному _id: ${req.params.usersId} не найден.` });
-        }
-      });
-  } else {
-    res.status(500).send({ message: 'На сервере произошла ошибка' });
-  }
+  User.findByIdAndUpdate(userid, { avatar }, { new: 'true', runValidators: true })
+    .orFail()
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: err.message });
+      } else if (err.name === 'DocumentNotFoundError') {
+        res.status(404).send({ message: `Пользователь по данному _id: ${req.params.user._id} не найден.` });
+      } else {
+        res.status(500).send({ message: 'На сервере произошла ошибка' });
+      }
+    });
 };
