@@ -86,14 +86,13 @@ module.exports.deletelikeCard = (req, res, next) => {
     .orFail()
     .populate(['owner', 'likes'])
     .then((card) => {
-      if (!card) {
-        next(new NotFoundError(`Карточка с _id: ${cardid} не найдена.`));
-      }
       res.send(card);
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.CastError) {
-        next(new BadRequestError(`Некорректный _id карточки: ${cardid}`));
+      if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFoundError(`Карточка с _id: ${req.params.cardId} не найдена.`));
+      } else if (err instanceof mongoose.Error.CastError) {
+        next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
       } else {
         next(err);
       }
