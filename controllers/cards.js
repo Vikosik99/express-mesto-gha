@@ -68,13 +68,13 @@ module.exports.likeCard = (req, res, next) => {
     .populate(['owner', 'likes'])
     .then((card) => {
       if (!card) {
-        next(new NotFoundError(`Карточка с _id: ${req.params.cardId} не найдена.`));
+        next(new NotFoundError(`Карточка с _id: ${cardid} не найдена.`));
       }
       res.send(card);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
+        next(new BadRequestError(`Некорректный _id карточки: ${cardid}`));
       } else {
         next(err);
       }
@@ -88,13 +88,13 @@ module.exports.deletelikeCard = (req, res, next) => {
     .populate(['owner', 'likes'])
     .then((card) => {
       if (!card) {
-        next(new NotFoundError(`Карточка с _id: ${req.params.cardId} не найдена.`));
+        next(new NotFoundError(`Карточка с _id: ${cardid} не найдена.`));
       }
       res.send(card);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
+        next(new BadRequestError(`Некорректный _id карточки: ${cardid}`));
       } else {
         next(err);
       }
