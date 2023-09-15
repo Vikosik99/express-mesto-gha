@@ -12,7 +12,7 @@ module.exports.addCard = (req, res, next) => {
         .orFail()
         .populate('owner')
         .then((data) => res.status(201).send(data))
-        .catch(() => next(new NotFoundError('Карточка с указанным _id не найдена.')));
+        .catch((err) => next(err));
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "vikosik99",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
