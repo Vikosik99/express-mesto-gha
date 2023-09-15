@@ -4,24 +4,24 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
-module.exports.addCard = (req, res, next) => {
-  const { name, link } = req.body;
-  Card.create({ name, link, owner: req.user._id })
-    .then((card) => {
-      Card.findById(card._id)
-        .orFail()
-        .populate('owner')
-        .then((data) => res.status(201).send(data))
-        .catch(() => next(new NotFoundError('Карточка с указанным _id не найдена.')));
-    })
-    .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        next(new BadRequestError(err.message));
-      } else {
-        next(err);
-      }
-    });
-};
+// module.exports.addCard = (req, res, next) => {
+//   const { name, link } = req.body;
+//   Card.create({ name, link, owner: req.user._id })
+//     .then((card) => {
+//       Card.findById(card._id)
+//         .orFail()
+//         .populate('owner')
+//         .then((data) => res.status(201).send(data))
+//         .catch(() => next(new NotFoundError('Карточка с указанным _id не найдена.')));
+//     })
+//     .catch((err) => {
+//       if (err instanceof mongoose.Error.ValidationError) {
+//         next(new BadRequestError(err.message));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
