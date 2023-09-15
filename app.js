@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
 
@@ -17,8 +18,8 @@ mongoose.connect(DB_URL, {
 
 app.use('/', require('./routes/index'));
 
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Данная страница не найдена' });
+app.use('*', (req, res, next) => {
+  next(new NotFoundError('Данная страница не найдена'));
 });
 
 app.use(errors());
